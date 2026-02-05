@@ -2,15 +2,13 @@ import React, {useEffect, useRef, useState} from 'react';
 import {
   View,
   StyleSheet,
-  Dimensions,
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  useWindowDimensions,
 } from 'react-native';
 import Video, {VideoRef} from 'react-native-video';
 import type {Video as VideoData} from '../data/videos';
-
-const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = Dimensions.get('window');
 
 interface VideoPlayerProps {
   video: VideoData;
@@ -22,6 +20,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({video, isActive}) => {
   const [paused, setPaused] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [liked, setLiked] = useState(false);
+  const {width: SCREEN_WIDTH, height: SCREEN_HEIGHT} = useWindowDimensions();
 
   useEffect(() => {
     if (isActive) {
@@ -41,8 +40,18 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({video, isActive}) => {
     return count.toString();
   };
 
+  const containerStyles = [
+    styles.container,
+    {width: SCREEN_WIDTH, height: SCREEN_HEIGHT},
+  ];
+
+  const videoStyles = [
+    styles.video,
+    {width: SCREEN_WIDTH, height: SCREEN_HEIGHT},
+  ];
+
   return (
-    <View style={styles.container}>
+    <View style={containerStyles}>
       <TouchableOpacity
         style={styles.videoContainer}
         activeOpacity={1}
@@ -50,7 +59,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({video, isActive}) => {
         <Video
           ref={videoRef}
           source={{uri: video.videoUrl}}
-          style={styles.video}
+          style={videoStyles}
           paused={paused}
           repeat
           resizeMode="cover"
@@ -96,16 +105,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({video, isActive}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
     backgroundColor: '#000',
   },
   videoContainer: {
     flex: 1,
   },
   video: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT,
+    position: 'absolute',
   },
   loadingContainer: {
     ...StyleSheet.absoluteFillObject,

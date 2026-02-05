@@ -3,17 +3,16 @@ import {
   View,
   FlatList,
   StyleSheet,
-  Dimensions,
   ViewToken,
+  useWindowDimensions,
 } from 'react-native';
 import {VideoPlayer} from './VideoPlayer';
 import {videos} from '../data/videos';
 
-const {height: SCREEN_HEIGHT} = Dimensions.get('window');
-
 export const VideoFeed: React.FC = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+  const {height: SCREEN_HEIGHT} = useWindowDimensions();
 
   const onViewableItemsChanged = useCallback(
     ({viewableItems}: {viewableItems: ViewToken[]}) => {
