@@ -123,10 +123,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     bottom: 100,
-    gap: 20,
   },
   actionButton: {
     alignItems: 'center',
+    marginBottom: 20,
   },
   actionIcon: {
     fontSize: 32,
